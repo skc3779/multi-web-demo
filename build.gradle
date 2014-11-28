@@ -1,7 +1,7 @@
 apply plugin: 'base'
 
 project.group = 'com.multi'
-project.version = '1.0.0'
+project.version = '0.1.0'
 
 ext {
     javaVersion = 1.8
