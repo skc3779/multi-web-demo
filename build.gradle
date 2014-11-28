@@ -7,9 +7,10 @@ ext {
     javaVersion = 1.8
     slf4jVersion = '1.7.6'
     springVersion = '4.0.8.RELEASE'
-    hibernateVersion = '4.3.6.Final'
+    hibernateVersion = '4.3.7.Final'
+    springjpaVersion = '1.7.1.RELEASE'
+    querydslVersion  = '3.5.1'
 }
-
 
 buildscript {
     repositories {
