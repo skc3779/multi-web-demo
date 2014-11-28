@@ -1,0 +1,11 @@
+# Created by .gitignore support plugin (hsz.mobi)
+.gradle
+.idea
+commons/build
+domains/build
+public-web/build
+out
+multi-web-demo.iml
+commons/commons.iml
+domains/domains.iml
+public-web/public-web.iml
