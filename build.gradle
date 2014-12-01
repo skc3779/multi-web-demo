@@ -10,6 +10,7 @@ ext {
     hibernateVersion = '4.3.7.Final'
     springjpaVersion = '1.7.1.RELEASE'
     querydslVersion  = '3.5.1'
+    aspectJVersion   = '1.8.4'
 }
 
 buildscript {

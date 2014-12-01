@@ -9,3 +9,5 @@ multi-web-demo.iml
 commons/commons.iml
 domains/domains.iml
 public-web/public-web.iml
+domains/src/generated
+domains/src/main/generated

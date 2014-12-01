@@ -2,11 +2,13 @@ package com.web.configs;
 
 import com.jolbox.bonecp.BoneCPDataSource;
 import lombok.extern.slf4j.Slf4j;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -31,12 +33,12 @@ public class DomainConfiguration {
 
     public static final String CONNECT_USERNAME = "connect.username";
     public static final String CONNECT_PASSWORD = "connect.password";
-    public static final String CONNECT_DATASOURCE = "connect.dataSource";
+    public static final String CONNECT_DRIVER = "connect.driver";
     public static final String CONNECT_URL = "connect.url";
 
     public static final String HIBERNATE_SHOW_SQL = "hibernate.show_sql";
-    public static final String HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
     public static final String HIBERNATE_DIALECT = "hibernate.dialect";
+
 
     @Autowired
     private Environment env;
@@ -50,17 +52,17 @@ public class DomainConfiguration {
         System.setProperty("org.jboss.logging.provider", "slf4j");
         PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
         propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
-
         return propertySourcesPlaceholderConfigurer;
     }
+
     @Bean(destroyMethod="close")
     public DataSource dataSource(){
         BoneCPDataSource dataSource = new BoneCPDataSource();
-        log.info("CONNECT_USERNAME : {}", env.getProperty(CONNECT_USERNAME));
+        log.info("CONNECT_USERNAME 1 : {}", env.getProperty(CONNECT_USERNAME));
         dataSource.setUsername(env.getProperty(CONNECT_USERNAME));
         dataSource.setPassword(env.getProperty(CONNECT_PASSWORD));
         dataSource.setJdbcUrl(env.getProperty(CONNECT_URL));
-        dataSource.setDriverClass(env.getProperty(CONNECT_DATASOURCE));
+        dataSource.setDriverClass(env.getProperty(CONNECT_DRIVER));
         dataSource.setIdleConnectionTestPeriodInMinutes(60);
         dataSource.setIdleMaxAgeInMinutes(240);
         dataSource.setMaxConnectionsPerPartition(5);
@@ -81,7 +83,7 @@ public class DomainConfiguration {
         jpaPropertyMap.put(HIBERNATE_DIALECT, env.getProperty(HIBERNATE_DIALECT));
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(dataSource());
-        entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        entityManagerFactory.setJpaVendorAdapter(hibernateJpaVendorAdapter());
         entityManagerFactory.setPackagesToScan("com.web.entities");
         entityManagerFactory.setJpaProperties(getHibernateProperties());
         return entityManagerFactory;
@@ -107,11 +109,15 @@ public class DomainConfiguration {
      * sessionFactoryFactory().getObject() FactoryFactory 이기 때문에 getObject() 받아야한다.
      */
     @Bean
-    public JpaTransactionManager transactionManager(){
+    public JpaTransactionManager transactionManager() throws Exception {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setDataSource(dataSource());
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return transactionManager;
     }
 
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 }

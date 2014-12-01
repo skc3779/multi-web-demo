@@ -21,7 +21,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={DomainConfiguration.class, ControllerConfiguration.class})
 @WebAppConfiguration
-public class HelloApiControllerTest {
+public class BookApiControllerTest {
+
 
     private MockMvc mvc;
 
@@ -30,16 +31,20 @@ public class HelloApiControllerTest {
 
     @Before
     public void setUp() {
-        this.mvc = webAppContextSetup(this.context).build();
+        mvc = webAppContextSetup(this.context).build();
     }
 
     @Test
-    public void testHello() throws Exception {
-
-        mvc.perform(get("/api/hello").param("name", "seo"))
+    public void testList() throws Exception {
+        mvc.perform(get("/api/book/list"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
 
-
+    @Test
+    public void testRead() throws Exception {
+        mvc.perform(get("/api/book/"+"1"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 }

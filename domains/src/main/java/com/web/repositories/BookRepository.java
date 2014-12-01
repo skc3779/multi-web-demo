@@ -12,4 +12,5 @@ import java.util.List;
  */
 public interface BookRepository extends JpaRepository<Book, Integer>, QueryDslPredicateExecutor<Book> {
     List<Book> findByName(String name);
+    Book findById(Integer id);
 }

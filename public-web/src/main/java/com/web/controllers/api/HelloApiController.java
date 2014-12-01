@@ -27,7 +27,7 @@ public class HelloApiController {
      */
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     @ResponseBody
-    public String hello(@RequestParam(value="name", defaultValue="") String name, Locale locale) {
+    public Object hello(@RequestParam(value="name", defaultValue="") String name, Locale locale) {
         log.info("locale : {}", locale.getDisplayLanguage());
         return helloSpring.sayHello(name);
     }

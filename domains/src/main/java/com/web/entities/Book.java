@@ -53,6 +53,7 @@ public class Book {
     public void setId(int id) {
         this.id = id;
     }
+
     @Column(name="name")
     public String getName() {
         return name;
@@ -60,6 +61,7 @@ public class Book {
     public void setName(String name) {
         this.name = name;
     }
+
     @Column(name="author")
     public String getAuthor() {
         return author;
@@ -67,7 +69,8 @@ public class Book {
     public void setAuthor(String author) {
         this.author = author;
     }
-    @Temporal(TemporalType.DATE)
+
+    //@Temporal(TemporalType.DATE)
     @Column(name="publishDate")
     public Date getPublishDate() {
         return publishDate;
@@ -75,6 +78,7 @@ public class Book {
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
     }
+
     @Column(name="comment")
     public String getComment() {
         return comment;
@@ -82,6 +86,7 @@ public class Book {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name="status")
     public BookStatus getBookStatus() {
@@ -90,7 +95,8 @@ public class Book {
     public void setBookStatus(BookStatus bookStatus) {
         this.bookStatus = bookStatus;
     }
-    @ManyToOne(fetch=FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="rentUserid", nullable=false)
     public User getRentUser() {
         return rentUser;
@@ -99,7 +105,7 @@ public class Book {
         this.rentUser = rentUser;
     }
 
-    @OneToMany(mappedBy="book", cascade=CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy="book", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
     public Set<History> getHistories() {
         return histories;
     }

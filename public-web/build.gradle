@@ -21,6 +21,14 @@ dependencies {
     providedCompile 'javax.servlet:jsp-api:2.0'
     compile 'javax.servlet:jstl:1.2'
 
+    /* aspectj */
+    compile "org.aspectj:aspectjrt:${rootProject.ext.aspectJVersion}"
+    compile "org.aspectj:aspectjtools:${rootProject.ext.aspectJVersion}"
+    compile "org.aspectj:aspectjweaver:${rootProject.ext.aspectJVersion}"
+
+    /* jade */
+    compile 'de.neuland-bfi:spring-jade4j:0.4.0'
+
 }
 
 /* Gretty running task */

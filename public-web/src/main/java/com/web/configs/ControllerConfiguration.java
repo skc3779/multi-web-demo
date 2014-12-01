@@ -1,11 +1,19 @@
 package com.web.configs;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import de.neuland.jade4j.JadeConfiguration;
+import de.neuland.jade4j.spring.template.SpringTemplateLoader;
+import de.neuland.jade4j.spring.view.JadeView;
+import de.neuland.jade4j.spring.view.JadeViewResolver;
+import org.springframework.context.annotation.*;
+import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -14,8 +22,9 @@ import org.springframework.web.servlet.view.JstlView;
  * Created by seokangchun on 14. 11. 28..
  */
 @Configuration
+@EnableAspectJAutoProxy
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.web.controllers"})
+@ComponentScan(basePackages = {"com.web.aops", "com.web.services", "com.web.controllers"})
 public class ControllerConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
@@ -28,14 +37,51 @@ public class ControllerConfiguration extends WebMvcConfigurerAdapter {
         return new BeanNameViewResolver();
     }
 
-    @Bean
-    public InternalResourceViewResolver internalResourceViewResolver() {
+    /**
+     * jsp viewer 설정
+     */
+   @Bean
+   public InternalResourceViewResolver internalResourceViewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/WEB-INF/views/");
+        viewResolver.setPrefix("/WEB-INF/jsp/");
         viewResolver.setSuffix(".jsp");
-        viewResolver.setOrder(1);
+        viewResolver.setOrder(3);
         return viewResolver;
     }
 
+    /**
+     * jade viewer 설정
+     *
+     * https://github.com/neuland/jade4j/tree/jade4j-0.4.0
+     * http://jade-lang.com/
+     * @return
+     */
+    @Bean
+    public SpringTemplateLoader templateLoader() {
+        SpringTemplateLoader templateLoader = new SpringTemplateLoader();
+        templateLoader.setBasePath("/WEB-INF/jade/");
+        templateLoader.setEncoding("UTF-8");
+        templateLoader.setSuffix(".jade");
+        return templateLoader;
+    }
+
+    @Bean
+    public JadeConfiguration jadeConfiguration() {
+        JadeConfiguration configuration = new JadeConfiguration();
+        configuration.setCaching(false);
+        configuration.setTemplateLoader(templateLoader());
+        configuration.setPrettyPrint(true);
+        return configuration;
+    }
+
+    @Bean
+    public ViewResolver viewResolver() {
+        JadeViewResolver viewResolver = new JadeViewResolver();
+        viewResolver.setConfiguration(jadeConfiguration());
+        viewResolver.setViewNames(new String[]{"*"});
+        viewResolver.setCache(false);
+        viewResolver.setOrder(0);
+        return viewResolver;
+    }
 }

@@ -52,3 +52,18 @@ create table histories (
 ALTER TABLE bookstore.histories ADD CONSTRAINT history_userFK FOREIGN KEY (userId) REFERENCES bookstore.users(id);
 ALTER TABLE bookstore.histories ADD CONSTRAINT history_bookFK FOREIGN KEY (bookId) REFERENCES bookstore.books(id);
 
+
+
+insert into books values (1, '책1번', '저자1번', '2014-10-10 10:10:00', '이책에 대한 설명', 1, null);
+insert into books values (2, '책2번', '저자2번', '2014-10-10 10:10:00', '이책에 대한 설명', 1, null);
+insert into books values (3, '책3번', '저자3번', '2014-10-10 10:10:00', '이책에 대한 설명', 1, null);
+insert into books values (4, '책4번', '저자4번', '2014-10-10 10:10:00', '이책에 대한 설명', 1, null);
+insert into books values (5, '책5번', '저자5번', '2014-10-10 10:10:00', '이책에 대한 설명', 1, null);
+insert into books values (6, '책6번', '저자6번', '2014-10-10 10:10:00', '이책에 대한 설명', 1, null);
+insert into books values (7, '책7번', '저자7번', '2014-10-10 10:10:00', '이책에 대한 설명', 1, null);
+insert into books values (8, '책8번', '저자8번', '2014-10-10 10:10:00', '이책에 대한 설명', 1, null);
+
+insert into users values (1, 'user1', 'pwd1', '0', 1);
+insert into users values (2, 'user2', 'pwd2', '0', 1);
+insert into users values (3, 'user3', 'pwd3', '0', 2);
+insert into users values (4, 'user4', 'pwd4', '0', 3);
