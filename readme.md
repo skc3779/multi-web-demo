@@ -11,8 +11,15 @@ db-web의 경우 mysql 데이터베이스를 연동하는 domain 로직을 제�
 ```cmd
 multi-web-demo
 |--- commons
-|--- domains
-|--- public-web
+|--- domains ( simple hello service, junit test )
+|--- public-web ( simple web, junit test (mokito))
 ```
 
 ## db-web application
+
+```cmd
+multi-web-demo
+|--- commons
+|--- domains ( jpa entities, repository, querydsl, service, junit test)
+|--- public-web ( simple web, junit test (mokito))
+```
